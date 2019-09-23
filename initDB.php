@@ -12,7 +12,37 @@ $connection_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 
 try
 {
+	foreach(glob("sql/*.sql") as $filename)
+	{
+		//echo $filename;
+		$sql[$filename] = file_get_contents($filename);
+		//echo $sql[$filename];
+	}
+
+	ksort($sql);
+	
+	//connect to Database
 	$db = new PDO($connection_string, $username, $password);
+
+	//$db->setAttribute(PDO::ATTR_ERRMODE);
+
+	foreach($sql as $key => $value)
+	{
+		echo "<br>Running: " . $key;
+		$stmt = $db->prepare($value);
+		$result = $stmt->execute();
+		$error = $stmt->errorInfo();
+
+		if($error && $error[0] !== '00000')
+		{
+			echo "<br>Error:<pre>" . var_export($error,true) . "</pre><br>";
+		}
+
+		echo "<br>$key result: " . ($result>0?"Success":"Fail") . "<br>";$db = new PDO($connection_string, $username, $password);
+	}
+
+/*
+	//$db->setAttribute(PDO::ATTR_ERRMODE);
 	echo "\nConnected";
 
 	$query = "create table if not exists `TestUsers`(
@@ -33,16 +63,21 @@ try
 
 	$insert_query = "INSERT INTO `TestUsers`(`username`, `pin`) VALUES (:username, :pin)";
 	$stmt = $db->prepare($insert_query);
-	$user = "JohnDoe";
-	$pin = 1234;
-	$r = $stmt->execute(array(":username"=>$user, ":pin"=>$pin));
+	$newUser = "Billy";
+	$newPin = 1234;
+	$r = $stmt->execute(array(":username"=>$newUser, ":pin"=>$newPin));
+	
+	print_r($stmt->errorInfo());
 
 	echo "<br>" . ($r>0?"Insert successful":"Insert failed") . "<br>";
 	
 	$select_query = "select * from `TestUsers` where username = :username";
-	
-	$result = $stmt->fetch();
-	echo "<br><pre>" . var_export($result, true) . "</pre><br>";
+	$stmt = $db->prepare($select_query);
+	$r = $stmt->execute(array(":username"=>"Billy"));
+
+	$results = $stmt->fetch(PDO::FETCH_ASSOC);	
+	echo "<pre>" . var_export($results, true) . "</pre>";
+*/
 }
 
 catch(Exception $e)
