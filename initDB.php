@@ -40,7 +40,6 @@ try
 
 		echo "<br>$key result: " . ($result>0?"Success":"Fail") . "<br>";$db = new PDO($connection_string, $username, $password);
 	}
-
 /*
 	//$db->setAttribute(PDO::ATTR_ERRMODE);
 	echo "\nConnected";
