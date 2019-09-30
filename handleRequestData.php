@@ -3,32 +3,55 @@
 
 	if(isset($_GET['name']))
 	{
-		echo "<br>Hello, " . $_GET['name'] . "!<br>";
+		$name = $_GET['name'];
+		echo "<br>Hello, " . $name . "!<br>";
 	}
-	//TODO
-	//handle addition of 2 or more parameters with proper number parsing
-	//concatenate 2 or more parameter values and echo them
-	//try passing multiple same-named parameters with different values
-	//try passing a parameter value with special characters
 
-	if(isset($_GET['number']))
+	if(isset($_GET['number1']))
 	{
-		$number = $_GET['number'];
-		echo "<br>" . $number . " should be a number, but it might not be... let me check.<br>";
-		echo "<br>Calculating...<br>";
-		echo "<br>Calculating...<br>";
+		$number1 = $_GET['number1'];
+		echo "<br>" . $number1 . " should be a number, but it might not be... let me check.";
+		echo "<br>Calculating...";
+		echo "<br>Calculating...";
 		echo "<br>Calculating...<br>";
 
-		if (is_numeric($number))
+		if (is_numeric($number1))
 		{
-			echo "<br>$number is a number!<br>", PHP_EOL;
+			echo "<br>$number1 is a number!<br>", PHP_EOL;
 		}
 
 		else
 		{
-			echo "<br>$number is not a number. Try a different value.<br>", PHP_EOL;
+			echo "<br>$number1 is not a number. Try a different value.<br>", PHP_EOL;
 		}
 	}
+	
+	if(isset($_GET['number2']))
+        {
+                $number2 = $_GET['number2'];
+                echo "<br>" . $number2 . " should also be a number, but it might not be... one moment.";
+                echo "<br>Calculating...";
+                echo "<br>Calculating...";
+                echo "<br>Calculating...<br>";
+
+                if (is_numeric($number2))
+                {
+                        echo "<br>$number2 is a number!<br>", PHP_EOL;
+                }
+
+                else
+                {
+                        echo "<br>$number2 is not a number. Try a different value.<br>", PHP_EOL;
+                }
+        }
+
+	echo "<br>1. Adding the numbers together yields: " . ($number1 + $number2) . "<br>";
+
+	echo "<br>2. This is a concatenation of values from different parameters: " . $name . $number1 . "<br>";
+
+	echo "<br>3. The GET function only allows the last value to take form, leaving the first value to be overwritten. Therefore, passing two parameters of the same name but different values must be done differently. I even attempt to remedy this directly from the address bar (https://web.njit.edu/~kc458/IT202/handleRequestData.php?name=Kenny&name=Kenny,Br^@n!&number1=2&number2=7) but it could not be done.<br>";
+
+	echo "<br>4. Only specific special characters may be passed, such as these: !@^, but others cannot, such as these: #%.";
 
 	//web.njit.edu/~kc458/IT202/handleRequestData.php?parameter1=a&p2=b
 ?>
