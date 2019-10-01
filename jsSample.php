@@ -41,6 +41,7 @@
 	<body onload="mySamples();">
 		<p id="myPara">Just showing that we loaded something!</p>
 		<div id="DIV">Added new element.</div>
+		<br><a href="https://github.com/Kenny7296/IT202/blob/master/jsSample.php">Github Repo</a><br>
 	</body>
 </html>
 <?php
