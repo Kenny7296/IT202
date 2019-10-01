@@ -40,10 +40,9 @@
 </head>
 	<body onload="mySamples();">
 		<p id="myPara">Just showing that we loaded something!</p>
-		<div id="DIV">Added a div element.</div>
+		<div id="DIV">Added new element.</div>
 	</body>
 </html>
-
 <?php
 if(isset($_GET['name']))
 	{
