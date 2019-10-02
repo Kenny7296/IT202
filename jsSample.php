@@ -32,15 +32,20 @@
 		//create a div tag, add "added new element" as the text
 		//add it to the DOM body
 
-		var x = document.createElement("DIV");
-		var t = document.createTextNode("This is a div element.");
-		document.body.appendChild(x);
+		let myDiv = document.createElement("DIV");
+		myDiv.innerText = "Added new element.";
+		document.body.appendChild(myDiv);
+/*
+		//using text node, this is uncommon
+		let text = document.createTextNode("Added new element.");
+		myDiv.appendChild(text);
+		document.body.appendChild(myDiv);
+*/
 	}
 	</script>
 </head>
 	<body onload="mySamples();">
 		<p id="myPara">Just showing that we loaded something!</p>
-		<div id="DIV">Added new element.</div>
 		<br><a href="https://github.com/Kenny7296/IT202/blob/master/jsSample.php">Github Repo</a><br>
 	</body>
 </html>
