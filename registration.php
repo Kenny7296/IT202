@@ -83,7 +83,7 @@ function checkPasswords()
                 <input type="submit" value="Try it"/>
         </form>
 
-        <br><a href="https://github.com/Kenny7296/IT202/blob/master/myFormAssignment.php">Github Repo</a><br>
+        <br><a href="https://github.com/Kenny7296/IT202/blob/master/registration.php">Github Repo</a><br>
 </body>
 </html>
 
