@@ -27,7 +27,6 @@ function getName()
                     		return false;
 			} 
   
-                	// If same return True. 
                 	else
 			{ 
                     		return true; 
@@ -44,6 +43,8 @@ function getName()
 
 		<input type="submit" value="Try it"/>
 	</form>
+	
+	<br><a href="https://github.com/Kenny7296/IT202/blob/master/myFormAssignment.php">Github Repo</a><br>
 </body>
 </html>
 
