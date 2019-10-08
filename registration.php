@@ -40,12 +40,16 @@ function checkPasswords()
 			if (password == conf)
 			{
 				pv.style.display = "none";
+				form.confirm.className = "noerror";
 			}
 			
 			else	
 			{
 				pv.style.display = "block";
 				pv.innerText = "Passwords don't match";
+				//form.confirm.focus();
+				form.confirm.className = "error";
+				//form.confirm.style = "border: 1px solid red;";
 				succeeded = false;
 			}
 
@@ -63,10 +67,21 @@ function checkPasswords()
 				ev.innerText = "Please enter a valid email address";
 				succeeded = false;
 			}
+
+			/*
+			add validation for a proper selection from dropdown.
+			First element should be "Select One", and it should require that
+			some other value is selected in order to proceed
+			*/
 			
 			return succeeded;
                 }
         </script>
+	<style>
+		input { border: 1px solid black; }
+		.error {border: 1px solid red;}
+		.noerror {border: 1px solid black;}
+	</style>
 </head>
 <body>
 	<div style="margin-left: 50%; margin-right: 50%;">
@@ -78,8 +93,9 @@ function checkPasswords()
 
                 <input name="password" type="password" placeholder="Enter a password"/>
                 <input name="confirm" type="password" placeholder="Confirm password"/>
-		<span style="display:none;" id="validation.password"></span>
+		<span id="validation.password" style="display:none;"></span>
 
+		<!-- Add dropdown element (something specific to your project) -->
                 <input type="submit" value="Try it"/>
         </form>
 
