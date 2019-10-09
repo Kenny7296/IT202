@@ -68,28 +68,16 @@ function checkPasswords()
 				succeeded = false;
 			}
 
-/*
-			var select = form.select.value;
-			var sv = document.getElementById('validation.select');
-			
-			if (select.value)
+			var sel = form.dd;
+
+			if (sel.selectedIndex == 0)
 			{
-				sv.style.display = "none";
+				alert("Please pick a value");
+				succeeded = false;
 			}
 
-			else
-			{
-				sv.style.display = "block";
-				sv.innerText = "Select One";
-				succeeded false;
-			}
-*/
-			/*
-			add validation for a proper selection from dropdown.
-			First element should be "Select One", and it should require that
-			some other value is selected in order to proceed
-			*/
-			
+			console.log(sel.options[sel.selectedIndex].value);
+
 			return succeeded;
                 }
         </script>
@@ -113,15 +101,12 @@ function checkPasswords()
                 <input name="confirm" type="password" placeholder="Confirm password"/>
 		<span id="validation.password" style="display:none;"></span>
 
-		<!-- Add dropdown element (something specific to your project) -->
-
-		<select id="select" class="required">
-			<option>Select One</option>
-			<option>This one?</option>
-			<option>No, this one!</option>
-			<option>Can't be this One.</option>
+		<select name="dd" class="required">
+			<option value="-1">Select One</option>
+			<option value="0">This one?</option>
+			<option value="1">No, this one!</option>
+			<option value="2">Can't be this One.</option>
 		</select>
-		<span id="validation.select" style="display:none;"></span>
 
 		<input type="submit" value="Try it"/>
         </form>
