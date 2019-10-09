@@ -68,6 +68,22 @@ function checkPasswords()
 				succeeded = false;
 			}
 
+/*
+			var select = form.select.value;
+			var sv = document.getElementById('validation.select');
+			
+			if (select.value)
+			{
+				sv.style.display = "none";
+			}
+
+			else
+			{
+				sv.style.display = "block";
+				sv.innerText = "Select One";
+				succeeded false;
+			}
+*/
 			/*
 			add validation for a proper selection from dropdown.
 			First element should be "Select One", and it should require that
@@ -86,17 +102,28 @@ function checkPasswords()
 <body>
 	<div style="margin-left: 50%; margin-right: 50%;">
         <form method="POST" action="#" onsubmit="return validate();">
-                <input name="name" type="text" placeholder="Enter your name"/>
+		
+		<input name="name" type="text" placeholder="Enter your name"/>
 
 		<input name="email" type="email" placeholder="name@example.com"/>
 		<span id="validation.email" style="display:none;"></span>
+		
 
                 <input name="password" type="password" placeholder="Enter a password"/>
                 <input name="confirm" type="password" placeholder="Confirm password"/>
 		<span id="validation.password" style="display:none;"></span>
 
 		<!-- Add dropdown element (something specific to your project) -->
-                <input type="submit" value="Try it"/>
+
+		<select id="select" class="required">
+			<option>Select One</option>
+			<option>This one?</option>
+			<option>No, this one!</option>
+			<option>Can't be this One.</option>
+		</select>
+		<span id="validation.select" style="display:none;"></span>
+
+		<input type="submit" value="Try it"/>
         </form>
 
         <br><a href="https://github.com/Kenny7296/IT202/blob/master/registration.php">Github Repo</a><br>
