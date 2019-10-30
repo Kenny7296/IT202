@@ -12,10 +12,10 @@ if((isset($_POST['name'])) && isset($_POST['password']))
 	$db = new PDO($conn_string, $username, $password);
 	echo "Connected";
 
-	$select_query = "select * from `TestUsers` where username = :username";
+	$select_query = "select * from `TestUsers` where username = :username and pin = :pin";
 	$stmt = $db->prepare($select_query);
 	$stmt->bindParam(":username", $_POST['username']);
-	$r = $stmt->execute(array(":username"=> "Billy"));
+	$r = $stmt->execute(array(":username"=> "Billy", ":pin"=> "1234"));
 	$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	if($stmt->errorInfo())
@@ -25,14 +25,14 @@ if((isset($_POST['name'])) && isset($_POST['password']))
 		
 	else
 	{
-		if($results["password"] == $_POST['password'])
+		if($results["pin"] == $_POST['password'] && $results["username"] == $_POST['username'])
 		{
 			echo $results;
 		}
 			
 		else
 		{
-			//
+			echo "Something is incorrect";
 		}
 	}
 }	
