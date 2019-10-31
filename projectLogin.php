@@ -3,38 +3,48 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//echo "Loaded Host: " . $host;
-if((isset($_POST['name'])) && isset($_POST['password']))
-{		
-	require('config.php');
-	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+try
+{
+	if((isset($_POST['username'])) && isset($_POST['pin']))
+	{		
+		require('config.php');
 
-	$db = new PDO($conn_string, $username, $password);
-	echo "Connected";
+		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+		$db = new PDO($conn_string, $username, $password);		
+		//$db->setAttribute(PDO::ATTR_ERRMODE);		
 
-	$select_query = "select * from `TestUsers` where username = :username and pin = :pin";
-	$stmt = $db->prepare($select_query);
-	$stmt->bindParam(":username", $_POST['username']);
-	$r = $stmt->execute(array(":username"=> "Billy", ":pin"=> "1234"));
-	$results = $stmt->fetch(PDO::FETCH_ASSOC);
+		$select_query = "SELECT * FROM `TestUsers` WHERE username = :username AND pin = :pin";
+		$stmt = $db->prepare($select_query);
+	
+		$stmt->bindValue(":username", ":pin", PDO::PARAM_STR);	
 
-	if($stmt->errorInfo())
-	{
-		print_r($stmt->errorInfo());
-	}
-		
-	else
-	{
-		if($results["pin"] == $_POST['password'] && $results["username"] == $_POST['username'])
+		$r = $stmt->execute();
+		$results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if($stmt->errorInfo())
 		{
-			echo $results;
+			print_r($stmt->errorInfo());
 		}
-			
+		
 		else
 		{
-			echo "Something is incorrect";
+			if($results["pin"] == $_POST['pin'])
+			{
+				echo $results["id"];
+			}
+			
+			else
+			{
+				echo "Something is incorrect";
+			}
 		}
 	}
+}
+
+catch(Exception $e)
+{
+	echo $e->getMessage();
+	exit("\nIt didn't work");
 }	
 ?>
 
@@ -44,7 +54,7 @@ if((isset($_POST['name'])) && isset($_POST['password']))
 <body>
       	<form method="POST" action="#">
                 <input type="text" name="username" placeholder="Enter username"/>
-                <input type="password" name="password" placeholder="Enter a password"/>
+                <input type="password" name="pin" placeholder="Enter a pin number"/>
                 <input type="submit" value="Login"/>
         </form>
 </body>
