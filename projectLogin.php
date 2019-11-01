@@ -16,9 +16,10 @@ try
 		$select_query = "SELECT * FROM `TestUsers` WHERE username = :username AND pin = :pin";
 		$stmt = $db->prepare($select_query);
 	
-		$stmt->bindValue(":username", ":pin", PDO::PARAM_STR);	
+		$stmt->bindValue(":username", $username, PDO::PARAM_STR);	
+		$stmt->bindValue(":pin", $pin, PDO::PARAM_INT);
 
-		$r = $stmt->execute();
+		$stmt->execute();
 		$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if($stmt->errorInfo())
