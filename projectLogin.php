@@ -11,7 +11,9 @@ try
 
 		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 		$db = new PDO($conn_string, $username, $password);		
-		//$db->setAttribute(PDO::ATTR_ERRMODE);		
+
+		$username = $_POST['username'];
+		$password = $_POST['password'];	
 
 		$select_query = "SELECT * FROM `TestUsers` WHERE username = :username AND pin = :pin";
 		$stmt = $db->prepare($select_query);
