@@ -17,18 +17,29 @@ try
 
 		$select_query = "SELECT * FROM `TestUsers` WHERE username = :username AND pin = :pin";
 		$stmt = $db->prepare($select_query);
+
+		$stmt->bindValue(":username", $username, PDO::PARAM_STR);
+		$stmt->bindValue(":pin", $password, PDO::PARAM_INT);
 	
-		$stmt->execute(array(":username"=>$username, ":pin"=>$password));
+		$stmt->execute();
+		//$stmt->execute(array(":username"=>$username, ":pin"=>$password));
 		$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
+		$error = $stmt->errorInfo();
+		if($error && $error[0] !== '00000')
+		{
+			echo "<br>Error:<pre>" . var_export($error, true) . "</pre><br>";
+		}
+
+/*
 		if($stmt->errorInfo())
 		{
 			print_r($stmt->errorInfo());
 		}
-		
+*/		
 		else
 		{
-			if($results["password"] == $_POST['password'])
+			if($results["pin"] == $password)
 			{
 				echo $results["id"];
 			}
