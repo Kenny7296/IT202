@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 try
 {
-	if((isset($_POST['username'])) && isset($_POST['pin']))
+	if((isset($_POST['username'])) && isset($_POST['password']))
 	{		
 		require('config.php');
 
@@ -16,10 +16,7 @@ try
 		$select_query = "SELECT * FROM `TestUsers` WHERE username = :username AND pin = :pin";
 		$stmt = $db->prepare($select_query);
 	
-		//$stmt->bindValue(":username", $username, PDO::PARAM_STR);	
-		//$stmt->bindValue(":pin", $pin, PDO::PARAM_INT);
-
-		$stmt->execute(array(":username"=>"$username", ":pin"=>"$pin"));
+		$stmt->execute(array(":username"=>$username, ":pin"=>$password));
 		$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if($stmt->errorInfo())
@@ -29,7 +26,7 @@ try
 		
 		else
 		{
-			if($results["pin"] == $_POST['pin'])
+			if($results["password"] == $_POST['password'])
 			{
 				echo $results["id"];
 			}
@@ -55,7 +52,7 @@ catch(Exception $e)
 <body>
       	<form method="POST" action="#">
                 <input type="text" name="username" placeholder="Enter username"/>
-                <input type="password" name="pin" placeholder="Enter a pin number"/>
+                <input type="password" name="password" placeholder="Enter a password"/>
                 <input type="submit" value="Login"/>
         </form>
 </body>
