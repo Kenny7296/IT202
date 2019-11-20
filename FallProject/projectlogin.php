@@ -21,24 +21,20 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confi
 {	
 	$user = $_POST['username'];
 	$pass = $_POST['password'];
+	$confirm = $_POST['confirm'];
 		
 	try
 	{
 		require('config.php');
 		
-		//$username, $password, $host, $database
 		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 		$db = new PDO($conn_string, $username, $password);
 
-		$stmt = $db->prepare("SELECT id, username, password FROM `TestUsers` WHERE username = :username LIMIT 1";
+		$stmt = $db->prepare("SELECT id, username, password FROM `Project` WHERE username = :username LIMIT 1";
 		$stmt->execute(array(":username"=>$user));
 
-		//print_r($stmt->errorInfo());
-		
 		$results = $stmt->fetch(PDO::FETCH_ASSOC);
 	
-		//echo var_export($result, true);
-		
 		if($results && count($results) > 0)
 		{
 			//$hash = password_hash($pass, PASSWORD_BCRYPT);
@@ -52,8 +48,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confi
 					$_SESSION['user'] = $user;
 					echo var_export($user, true);
 					echo var_export($_SESSION, true);
-					header("Location: samplelandingpage.php");
-					
+					header("Location: samplelandingpage.php");		
 			}
 
 			else
@@ -75,11 +70,4 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confi
 		exit("\nIt didn't work");
 	}
 }	
-?>
-
-<?php
-if(isset($_POST))
-        {
-                echo "<br><pre>" . var_export($_POST, true) . "</pre><br>";
-        }
 ?>

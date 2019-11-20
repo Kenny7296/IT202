@@ -37,7 +37,7 @@ $(document).ready(function()
 	<form id="register_form" method="POST"/>
 		<input type="text" name="username" placeholder="Enter username"/>
 		<input type="password" name="password" placeholder="Enter password"/>
-		<input type="password" name="confirm" placeholder="Confirm password/>
+		<input type="password" name="confirm" placeholder="Confirm password"/>
 		<input type="submit" value="Register"/>
 	</form>
 </body>
@@ -56,16 +56,16 @@ $(document).ready(function()
 			exit();
 		}
 
-		//do further validation?
 		try
 		{
-			//do hash of password
 			$hash = password_hash($pass, PASSWORD_BCRYPT);
+
 			require("config.php");
+
 			//$username, $password, $host, $database
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
-			$stmt = $db->prepare("INSERT into `Users` (`username`, `password`) VALUES(:username, :password)");
+			$stmt = $db->prepare("INSERT into `Project` (`username`, `password`) VALUES(:username, :password)");
 			$result = $stmt->execute(
 				array(":username"=>$user,
 					":password"=>$hash
