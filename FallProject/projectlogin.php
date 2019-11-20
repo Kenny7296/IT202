@@ -30,7 +30,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confi
 		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 		$db = new PDO($conn_string, $username, $password);
 
-		$stmt = $db->prepare("SELECT id, username, password FROM `Project` WHERE username = :username LIMIT 1";
+		$stmt = $db->prepare("SELECT id, username, password FROM `Users` WHERE username = :username LIMIT 1";
 		$stmt->execute(array(":username"=>$user));
 
 		$results = $stmt->fetch(PDO::FETCH_ASSOC);
