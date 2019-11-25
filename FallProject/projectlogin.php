@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors',1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
@@ -16,53 +16,52 @@ error_reporting(E_ALL);
 </html>
 
 <?php
-if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirm']))
-{	
-	$user = $_POST['username'];
-	$pass = $_POST['password'];
-	$confirm = $_POST['confirm'];
+	if(isset($_POST['username']) && isset($_POST['password']))
+	{	
+		$user = $_POST['username'];
+		$pass = $_POST['password'];
 
-	try
-	{
-		require('config.php');
-		
-		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
-		$db = new PDO($conn_string, $username, $password);
-
-		$stmt = $db->prepare("SELECT id, username, password FROM `TestUsers` WHERE username = :username LIMIT 1";
-		$stmt->execute(array(":username"=>$user));
-
-		$results = $stmt->fetch(PDO::FETCH_ASSOC);
-	
-		if($results && count($results) > 0)
+		try
 		{
-			if(password_verify($pass, $results['password']))
+			require('config.php');
+		
+			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+			$db = new PDO($conn_string, $username, $password);
+
+			$stmt = $db->prepare("SELECT username, password FROM `Users` WHERE username = :username LIMIT 1";
+			$stmt->execute(array(":username"=>$user));
+
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			if($results && count($results) > 0)
 			{
-				echo "Welcome, " . $results["username"];
-				echo "[" . $results["id"] . "]";
-				$user = array("id"=> $results['id'], "name"=> $results['username']);
-				$_SESSION['user'] = $user;
-				echo var_export($user, true);
-				echo var_export($_SESSION, true);
-				header("Location: samplelandingpage.php");		
+				if(password_verify($pass, $results['password']))
+				{
+					echo "Welcome, " . $results["username"];
+					echo "[" . $results["id"] . "]";
+					$user = array("id"=> $results['id'], "name"=> $results['username']);
+					$_SESSION['user'] = $user;
+					echo var_export($user, true);
+					echo var_export($_SESSION, true);
+					header("Location: samplelandingpage.php");		
+				}
+
+				else
+				{
+					echo "Invalid password";
+				}
 			}
 
 			else
 			{
-				echo "Invalid password";
+				echo "Invalid username";
 			}
 		}
-		
-		else
-		{
-			echo "Invalid username";
-		}	
-	}
 
-	catch(Exception $e)
-	{
-		echo $e->getMessage();
-		exit("\nIt didn't work");
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
+			exit("\nIt didn't work");
+		}
 	}
-}	
 ?>
