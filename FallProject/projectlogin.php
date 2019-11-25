@@ -24,12 +24,12 @@ error_reporting(E_ALL);
 
 		try
 		{
-			require('config.php');
+			require("config.php");
 		
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
 
-			$stmt = $db->prepare("SELECT username, password FROM `Users` WHERE username = :username LIMIT 1";
+			$stmt = $db->prepare("SELECT username, password FROM `Users` WHERE username = :username LIMIT 1");
 			$stmt->execute(array(":username"=>$user));
 
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@ error_reporting(E_ALL);
 					$_SESSION['user'] = $user;
 					echo var_export($user, true);
 					echo var_export($_SESSION, true);
-					header("Location: samplelandingpage.php");		
+					header("Location: samplelandingpage.php");
 				}
 
 				else
