@@ -62,7 +62,6 @@ $(document).ready(function()
 
 			require("config.php");
 
-			//$username, $password, $host, $database
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
 			$stmt = $db->prepare("INSERT into `Users` (`username`, `password`) VALUES(:username, :password)");
