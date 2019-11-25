@@ -11,7 +11,7 @@ session_start();
 <script>
 $(document).ready(function()
 {
-	var nav = ["Home", "About", "Logout"];
+	var nav = ["It works?", "I think so!", "Logout"];
 	let ul = $("<ul>");
 	$("body").append(ul);
 

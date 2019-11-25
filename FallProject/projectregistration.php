@@ -65,11 +65,7 @@ $(document).ready(function()
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
 			$stmt = $db->prepare("INSERT into `Users` (`username`, `password`) VALUES(:username, :password)");
-			$result = $stmt->execute(
-				array(":username"=>$user,
-					":password"=>$hash
-				)
-			);
+			$result = $stmt->execute(array(":username"=>$user, ":password"=>$hash));
 
 			print_r($stmt->errorInfo());
 			
