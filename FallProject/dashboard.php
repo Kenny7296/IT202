@@ -1,5 +1,8 @@
 <?php
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 
 <html>
@@ -16,6 +19,7 @@ session_start();
 		var nav = ["It works?", "I think so!", "Logout"];
 		let ul = $("<ul>");
 		$("body").append(ul);
+
 		nav.forEach(function(item, index)
 		{
 			let ele = $("<a>");
@@ -34,13 +38,13 @@ session_start();
 		<input type="radio" name="q" value="B"/>
 
 		<input type="Submit" name="Submit1" value="Click here to vote"/>
-		<input type="Hidden" name="h1" value=<?php print $qID; ?>/>
+		<!-- <input type="Hidden" name="h1" value=<?php print $ID; ?>/> -->
 	</form>
 
 
 	<form name="form2" method="GET" action="results.php">
 		<input type="Submit" name="Submit2" value="View results"/>
-		<input type="Hidden" name="h1" value=<?php print $qID; ?>/>
+		<!-- <input type="Hidden" name="h1" value=<?php print $ID; ?>/> -->
 	</form>
 </body>
 </html>
@@ -48,7 +52,7 @@ session_start();
 <?php
 	if(isset($_GET['Question']))
 	{
-		$qID = $_GET['ID'];
+		$ID = $_GET['ID'];
 
 		try
 		{
@@ -58,15 +62,15 @@ session_start();
 			$db = new PDO($conn_string, $username, $password);
 
 			$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE ID = 1");
-			$stmt->execute(array("ID"=>$qID));
+			$stmt->execute(array(":ID"=>$ID));
 
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			if($results && count($results) > 0)
 			{
-				$qID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
+				$ID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
 				$_SESSION['ID'] = $ID;
-				echo var_export($qID, true);
+				echo var_export($ID, true);
 				//echo var_export($_SESSION, true);
 			}
 
