@@ -33,26 +33,25 @@ error_reporting(E_ALL);
 <body>
 	Hello there, <?php echo $_SESSION['user']['name'];?>
 
-	<form name="form1" method="GET" action="process.php">
-		<input type="radio" name="q" value="A"/>
-		<input type="radio" name="q" value="B"/>
+	<form name="form1" method="POST">
+		<input type="hidden" name="ID" value="<?php echo $row['ID'];?>"/>
+		<input type="radio" name="A" value="<?php echo $row['OptionA'];?>"/>
+		<input type="radio" name="B" value="<?php echo $row['OptionB'];?>"/> 
 
-		<input type="Submit" name="Submit1" value="Click here to vote"/>
-		<!-- <input type="Hidden" name="h1" value=<?php print $ID; ?>/> -->
+		<input type="Submit" value="Click here to vote"/>
 	</form>
 
 
-	<form name="form2" method="GET" action="results.php">
+	<form name="form2" method="POST" action="results.php">
 		<input type="Submit" name="Submit2" value="View results"/>
-		<!-- <input type="Hidden" name="h1" value=<?php print $ID; ?>/> -->
 	</form>
 </body>
-</html>
+0</html>
 
 <?php
-	if(isset($_GET['Question']))
+	if(isset($_POST['Question']))
 	{
-		$ID = $_GET['ID'];
+		$Question = $_POST['Question'];
 
 		try
 		{
@@ -61,19 +60,19 @@ error_reporting(E_ALL);
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
 
-			$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE ID = 1");
-			$stmt->execute(array(":ID"=>$ID));
+			$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE Question = :Question");
+			$stmt->execute(array(":Question"=>$Question));
 
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			if($results && count($results) > 0)
 			{
-				$ID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
-				$_SESSION['ID'] = $ID;
-				echo var_export($ID, true);
+				$Question = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
+				$_SESSION['Question'] = $Question;
+				echo var_export($Question, true);
 				//echo var_export($_SESSION, true);
 			}
-
+		
 			else
 			{
 				echo "Error getting survey";

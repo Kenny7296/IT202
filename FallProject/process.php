@@ -26,13 +26,13 @@ else
 		{
 			if($selected_radio == "A")
 			{
-				$vote = "UPDATE Questions SET VotedA = VotedA + 1 WHERE ID = ?";
+				$vote = "UPDATE Questions SET VotedA = VotedA + 1 WHERE ID = :ID";
 				$voteMessage = insert_vote($db, $vote, $IDnumber);
 			}
 
 			else if($selected_radio == "B")
 			{
-				$vote = "UPDATE Questions SET VotedB = VotedB + 1 WHERE ID = ?";
+				$vote = "UPDATE Questions SET VotedB = VotedB + 1 WHERE ID = :ID";
 				$voteMessage = insert_vote($db, $vote, $IDnumber);
 			}
 			
@@ -52,7 +52,7 @@ else
 function insert_vote($db, $vote, $ID)
 {
 	$stmt = $db->prepare($vote);
-	$stmt->execute(array("i"=> $ID));
+	$stmt->execute(array(":ID"=> $ID));
 
 	return "Thanks for voting!";
 }
