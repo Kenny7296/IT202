@@ -64,12 +64,14 @@ $(document).ready(function()
 
 			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 			$db = new PDO($conn_string, $username, $password);
-			$stmt = $db->prepare("INSERT into `Users` (`username`, `password`) VALUES(:username, :password)");
+			
+			$stmt = $db->prepare("INSERT INTO `Users` (`username`, `password`) VALUES(:username, :password)");
 			$result = $stmt->execute(array(":username"=>$user, ":password"=>$hash));
 
 			print_r($stmt->errorInfo());
 			
 			echo var_export($result, true);
+			header("Location: projectlogin.php");
 		}
 
 		catch(Exception $e)
