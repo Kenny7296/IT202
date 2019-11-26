@@ -28,6 +28,25 @@ session_start();
 </head>
 <body>
 Hello there, <?php echo $_SESSION['user']['name'];?>
+
+	<form name="form1" method="GET" action="process.php">
+		<p>
+			<?php print $question; ?>
+		<p>
+			<input type="radio' name="q"  value="A" <?php print $answerA; ?>><?php print $A; ?>
+		<p>
+			<input type="radio' name="q"  value="B" <?php print $answerB; ?>><?php print $B; ?>
+		<p>
+
+		<input type="Submit" name="Submit1" value="Click here to vote">
+		<input type="Hidden" name="h1" value=<?PHP print $qID; ?>>
+	</form>
+
+
+	<form name="form2" method="GET" action="viewResults.php">
+
+	<input type="Submit" name="Submit2" value="View results">
+	<input type="Hidden" name="h1" value=<?PHP print $qID; ?>>
 </body>
 </html>
 
@@ -53,47 +72,22 @@ Hello there, <?php echo $_SESSION['user']['name'];?>
 	$B = "";
 	$C = "";
 
-	$conn_string = "survey";
-
+	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 
-	if ($db)
+	$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM Questions WHERE ID = ?");
+	$results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if($results && count($results) > 0)
 	{
-		$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB, OptionC FROM Questions WHERE ID = ?");
-
-		if ($stmt)
-		{
-			$stmt->bind_param('i', $qID);
-			$stmt->execute();
-			$res = $stmt->get_result();
-
-			if ($res->num_rows > 0)
-			{
-				$row = $res->fetch_assoc();
-
-				$qID = $row['ID'];
-				$question = $row['Question'];
-				$A = $row['OptionA'];
-				$B = $row['OptionB'];
-				$C = $row['OptionC'];
-
-			}
-
-			else
-			{
-				print "Error - No rows";
-			}
-		}
-
-		else
-		{
-			print "Error - DB ERROR";
-		}
-
-	}
-	else {
-		print "Error getting Survey";
+		$qID = $row['ID'];
+		$question = $row['Question'];
+		$A = $row['OptionA'];
+		$B = $row['OptionB'];
 	}
 
-
+	else
+	{
+		echo "Error getting Survey";
+	}
 ?>

@@ -18,7 +18,7 @@ else
 		$selected_radio = $_GET['q'];
 		$IDnumber = $_GET['h1'];
 
-		$conn_string = "survey";
+		$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 
 		$db = new PDO($conn_string, $username, $password);
 
