@@ -39,8 +39,8 @@ error_reporting(E_ALL);
 				if(password_verify($pass, $results['password']))
 				{
 					echo "Welcome, " . $results["username"];
-					echo "[" . $results["id"] . "]";
-					$user = array("id"=> $results['id'], "name"=> $results['username']);
+					echo "[" . $results["ID"] . "]";
+					$user = array("ID"=> $results['ID'], "name"=> $results['username']);
 					$_SESSION['user'] = $user;
 					echo var_export($user, true);
 					echo var_export($_SESSION, true);

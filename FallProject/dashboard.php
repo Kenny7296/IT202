@@ -30,7 +30,6 @@ session_start();
 	Hello there, <?php echo $_SESSION['user']['name'];?>
 
 	<form name="form1" method="GET" action="process.php">
-		<?php print $question; ?>
 		<input type="radio" name="q" value="A"/>
 		<input type="radio" name="q" value="B"/>
 
@@ -47,23 +46,39 @@ session_start();
 </html>
 
 <?php
-	require ("config.php");
-
-	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
-	$db = new PDO($conn_string, $username, $password);
-
-	$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE ID = 1");
-	$stmt->execute(array("ID"=>$qID));
-
-	$results = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	if($results && count($results) > 0)
+	if(isset($_GET['Question']))
 	{
-		$qID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
-	}
+		$qID = $_GET['ID'];
 
-	else
-	{
-		echo "Error getting survey";
+		try
+		{
+			require ("config.php");
+
+			$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+			$db = new PDO($conn_string, $username, $password);
+
+			$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE ID = 1");
+			$stmt->execute(array("ID"=>$qID));
+
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if($results && count($results) > 0)
+			{
+				$qID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
+				$_SESSION['ID'] = $ID;
+				echo var_export($qID, true);
+				//echo var_export($_SESSION, true);
+			}
+
+			else
+			{
+				echo "Error getting survey";
+			}
+		}
+
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
+		}
 	}
 ?>
