@@ -38,22 +38,21 @@ else
 			
 			else
 			{
-				print "Error - could not record vote";
+				echo "Error - could not record vote";
 			}	
 		}
 	}
 	
 	else
 	{
-		print "Please vote!";
+		echo "Please vote!";
 	}
 }
 
 function insert_vote($db, $vote, $ID)
 {
 	$stmt = $db->prepare($vote);
-	$stmt->bind_param('i', $ID);
-	$stmt->execute();
+	$stmt->execute(array("i"=> $ID));
 
 	return "Thanks for voting!";
 }
