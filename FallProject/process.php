@@ -49,10 +49,10 @@ else
 	}
 }
 
-function insert_vote($db, $sql, $id)
+function insert_vote($db, $vote, $ID)
 {
-	$stmt = $db->prepare($sql);
-	$stmt->bind_param('i', $id);
+	$stmt = $db->prepare($vote);
+	$stmt->bind_param('i', $ID);
 	$stmt->execute();
 
 	return "Thanks for voting!";
@@ -64,6 +64,6 @@ function insert_vote($db, $sql, $id)
 <head>
 </head>
 <body>
-<?PHP print $voteMessage . "<BR>"; ?>
+	<?php print $voteMessage . "<BR>"; ?>
 </body>
 </html>

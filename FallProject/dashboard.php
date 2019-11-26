@@ -27,67 +27,43 @@ session_start();
 </script>
 </head>
 <body>
-Hello there, <?php echo $_SESSION['user']['name'];?>
+	Hello there, <?php echo $_SESSION['user']['name'];?>
 
 	<form name="form1" method="GET" action="process.php">
-		<p>
-			<?php print $question; ?>
-		<p>
-			<input type="radio' name="q"  value="A" <?php print $answerA; ?>><?php print $A; ?>
-		<p>
-			<input type="radio' name="q"  value="B" <?php print $answerB; ?>><?php print $B; ?>
-		<p>
+		<?php print $question; ?>
+		<input type="radio" name="q" value="A"/>
+		<input type="radio" name="q" value="B"/>
 
-		<input type="Submit" name="Submit1" value="Click here to vote">
-		<input type="Hidden" name="h1" value=<?PHP print $qID; ?>>
+		<input type="Submit" name="Submit1" value="Click here to vote"/>
+		<input type="Hidden" name="h1" value=<?php print $qID; ?>/>
 	</form>
 
 
-	<form name="form2" method="GET" action="viewResults.php">
-
-	<input type="Submit" name="Submit2" value="View results">
-	<input type="Hidden" name="h1" value=<?PHP print $qID; ?>>
+	<form name="form2" method="GET" action="results.php">
+		<input type="Submit" name="Submit2" value="View results"/>
+		<input type="Hidden" name="h1" value=<?php print $qID; ?>/>
+	</form>
 </body>
 </html>
 
 <?php
-	require ("configure.php");
-	
-	if (isset($_GET['h1']))
-	{
-		$qID = $_GET['h1'];
-	}
-	
-	else
-	{
-		$qID = 1;
-	}
-
-	$question = 'Question not set';
-	$answerA = 'unchecked';
-	$answerB = 'unchecked';
-	$answerC = 'unchecked';
-
-	$A = "";
-	$B = "";
-	$C = "";
+	require ("config.php");
 
 	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 
-	$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM Questions WHERE ID = ?");
+	$stmt = $db->prepare("SELECT ID, Question, OptionA, OptionB FROM `Questions` WHERE ID = 1");
+	$stmt->execute(array("ID"=>$qID));
+
 	$results = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	if($results && count($results) > 0)
 	{
-		$qID = $row['ID'];
-		$question = $row['Question'];
-		$A = $row['OptionA'];
-		$B = $row['OptionB'];
+		$qID = array("ID"=> $results['ID'], "question"=> $results['Question'], "A"=> $results['OptionA'], "B"=> $results['OptionB']);
 	}
 
 	else
 	{
-		echo "Error getting Survey";
+		echo "Error getting survey";
 	}
 ?>
