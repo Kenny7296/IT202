@@ -52,8 +52,8 @@ if(isset($_POST['choice']))
                 	<p><?php echo $row['Question']; ?></p>
                 	<form method="POST">
 				<label for="yes">Yes</label>
-				<input type="radio" name="choice" id="yes" value="<?php echo $row['OptionA'];?>"/>
 				<label for="no">No</label>
+				<input type="radio" name="choice" id="yes" value="<?php echo $row['OptionA'];?>"/>
 				<input type="radio" name="choice" id="no" value="<?php echo $row['OptionB'];?>"/>
 				<input type="Submit" value="Pick"/>
 			</form>

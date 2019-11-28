@@ -5,7 +5,6 @@ function view_item($ID)
 	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 	
-	//Lookup item by id
 	$stmt = $db->prepare("SELECT * FROM `Questions` WHERE ID = :ID");
 	$stmt->execute(array(":ID"=>$ID));
 	$results = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,9 +17,8 @@ function update_item($ID, $A, $B)
 	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 
-	//Lookup post by id
-	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = :1, VotedB = :2, WHERE ID = :ID");
-	$r = $stmt->execute(array(":ID"=>$ID, ":1"=>$A, ":2"=>$B));
+	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = VotedA + 1, VotedB = VotedB + 2, WHERE ID = :ID");
+	$r = $stmt->execute(array(":ID"=>$ID, "VotedA + 1"=>$A, "VotedB + 1"=>$B));
 	return $r > 0;
 }
 ?>
@@ -60,12 +58,12 @@ function update_item($ID, $A, $B)
 <?php $row = view_item($ID);?>
 <?php if($row): ?>
 	<article>
-		<p><?php echo $row['Question'];	?></p>
+		<p><?php echo $row['Question']; ?></p>
 		<form method="POST">
 			<label for="yes">Yes</label>
-			<input type="radio" name="VotedA" id="yes" value="<?php echo $row['OptionA'];?>"/>
+			<input type="radio" name="choice" id="yes" value="<?php echo $row['OptionA'];?>"/>
 			<label for="no">No</label>
-			<input type="radio" name="VotedB" id="no" value="<?php echo $row['OptionB'];?>"/>
+			<input type="radio" name="choice" id="no" value="<?php echo $row['OptionB'];?>"/>
 			<input type="Submit" value="Pick"/>
 		</form>
 	</article>
