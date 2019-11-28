@@ -6,44 +6,69 @@ function view_item($ID)
 	$db = new PDO($conn_string, $username, $password);
 	
 	//Lookup item by id
-	$stmt = $db->prepare("SELECT ID, Question, OptionA. OptionB FROM `Questions` WHERE ID = :ID");
+	$stmt = $db->prepare("SELECT * FROM `Questions` WHERE ID = :ID");
 	$stmt->execute(array(":ID"=>$ID));
 	$results = $stmt->fetch(PDO::FETCH_ASSOC);
 	return $results;
 }
 
-function update_item($id, $one, $two, $three)
+function update_item($ID, $A, $B)
 {
 	require("config.php");
 	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 
 	//Lookup post by id
-	$stmt = $db->prepare("UPDATE `Questions` SET OptionA = :1, OptionB = :2, WHERE ID = :ID");
-	$r = $stmt->execute(array(
-		":id"=>$id,
-		":1"=>$one,
-		":2"=>$two,
-		":3"=>$three));
+	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = :1, VotedB = :2, WHERE ID = :ID");
+	$r = $stmt->execute(array(":ID"=>$ID, ":1"=>$A, ":2"=>$B));
 	return $r > 0;
 }
 ?>
 
 <?php
-	//we form was submitted update table
-	if(isset($_POST['id'])){
-		update_item($_POST['id'], $_POST['data_one'], $_POST['data_two'], $_POST['data_three']);
+	if(isset($_POST['ID']))
+	{
+		update_item($_POST['ID'], $_POST['VotedA'], $_POST['VotedB']);
 	}
 ?>
 
-<?php $row = view_item($id);?>
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script>
+
+<script>
+	$(document).ready(function()
+	{
+		var nav = ["It works?", "I think so!", "Logout"];
+		let ul = $("<ul>");
+		$("body").append(ul);
+		nav.forEach(function(item, index)
+		{
+			let ele = $("<a>");
+			ele.attr("href", "?page="+item);
+			ele.text(item);
+			ul.append($("<li>").append(ele[0]));
+		});	
+	});
+</script>
+</head>
+<body>
+<?php $row = view_item($ID);?>
 <?php if($row): ?>
-	<!-- create a form to edit our item; pass in the current data to the respective values-->
-	<form method="POST">
-		<input type="hidden" name="id" value="<?php echo $row['id'];?>"/>
-		<input type="text" name="data_one" value="<?php echo $row['data_one'];?>" />
-		<input type="text" name="data_two" value="<?php echo $row['data_two'];?>" />
-		<input type="text" name="data_three" value="<?php echo $row['data_three'];?>" />
-		<input type="submit" value="Update"/>
-	</form>
+	<article>
+		<p><?php echo $row['Question'];	?></p>
+		<form method="POST">
+			<label for="yes">Yes</label>
+			<input type="radio" name="VotedA" id="yes" value="<?php echo $row['OptionA'];?>"/>
+			<label for="no">No</label>
+			<input type="radio" name="VotedB" id="no" value="<?php echo $row['OptionB'];?>"/>
+			<input type="Submit" value="Pick"/>
+		</form>
+	</article>
 <?php endif; ?>
+</body>
+</html>
