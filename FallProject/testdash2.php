@@ -11,23 +11,44 @@ function view_item($ID)
 	return $results;
 }
 
-function update_item($ID, $A, $B)
+function update_item($ID, $A, $B, $choice)
 {
+	$A = "";
+        $B = "";
+
+        if($choice == A)
+	{
+		$A++;
+	}
+
+	if($choice == B)
+	{
+		$B++;
+	}
+
 	require("config.php");
 	$conn_string = "mysql:host=$host;dbname=$database;charset=utf8mb4";
 	$db = new PDO($conn_string, $username, $password);
 
-	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = VotedA + 1, VotedB = VotedB + 2, WHERE ID = :ID");
-	$r = $stmt->execute(array(":ID"=>$ID, "VotedA + 1"=>$A, "VotedB + 1"=>$B));
+	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = VotedA + :VotedA, VotedB = VotedB + :VotedB, WHERE ID = :ID");
+	$r = $stmt->execute(array(":ID"=>$ID, ":VotedA"=>$A, ":VotedB"=>$B));
+
 	return $r > 0;
 }
 ?>
 
 <?php
-	$ID = 1;
 	if(isset($_POST['ID']))
 	{
 		update_item($_POST['ID'], $_POST['VotedA'], $_POST['VotedB']);
+	}
+?>
+
+<?php
+	$ID = 1;
+	if(isset($_POST['choice']))
+	{
+		$ID = $_POST['choice'];
 	}
 ?>
 
@@ -62,9 +83,9 @@ function update_item($ID, $A, $B)
 		<p><?php echo $row['Question']; ?></p>
 		<form method="POST">
 			<label for="yes">Yes</label>
-			<input type="radio" name="VotedA" id="yes" value="<?php echo $row['OptionA'];?>"/>
+			<input type="radio" name="choice" id="yes" value="A" <?php echo $row['OptionA'];?>/>
 			<label for="no">No</label>
-			<input type="radio" name="VotedB" id="no" value="<?php echo $row['OptionB'];?>"/>
+			<input type="radio" name="choice" id="no" value="B" <?php echo $row['OptionB'];?>/>
 			<input type="Submit" value="Pick"/>
 		</form>
 	</article>
