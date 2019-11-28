@@ -31,7 +31,7 @@ function update_item($ID, $A, $B, $choice)
 	$db = new PDO($conn_string, $username, $password);
 
 	$stmt = $db->prepare("UPDATE `Questions` SET VotedA = VotedA + :VotedA, VotedB = VotedB + :VotedB, WHERE ID = :ID");
-	$r = $stmt->execute(array(":ID"=>$ID, ":VotedA"=>$A, ":VotedB"=>$B));
+	$r = $stmt->execute(array(":ID"=> $ID, "VotedA + :VotedA"=> $A, "VotedB + :VotedB"=> $B));
 
 	return $r > 0;
 }
