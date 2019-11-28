@@ -16,12 +16,12 @@ function update_item($ID, $A, $B, $choice)
 	$A = "";
         $B = "";
 
-        if($choice == A)
+        if($choice == "A")
 	{
 		$A++;
 	}
 
-	if($choice == B)
+	if($choice == "B")
 	{
 		$B++;
 	}
