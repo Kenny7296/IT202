@@ -24,6 +24,7 @@ function update_item($ID, $A, $B)
 ?>
 
 <?php
+	$ID = 1;
 	if(isset($_POST['ID']))
 	{
 		update_item($_POST['ID'], $_POST['VotedA'], $_POST['VotedB']);
