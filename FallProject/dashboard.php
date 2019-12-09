@@ -63,7 +63,7 @@ function update_item($ID, $A, $B, $choice)
 <script>
 	$(document).ready(function()
 	{
-		var nav = ["It works?", "I think so!", "Logout"];
+		var nav = ["Home", "About", "Logout"];
 		let ul = $("<ul>");
 		$("body").append(ul);
 		nav.forEach(function(item, index)
